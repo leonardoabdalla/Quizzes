@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum UserType {
+  ADMIN
+  REGULAR
+  GUEST
+}
+
+model Customer {
+  id          String  @id  @default(auto())  @map("_id")  @db.ObjectId
+  type        UserType
+  name        String
+  password    String
+  email       String
+  status      Boolean
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @default(now())
+
+  @@map("customers")
+}
+
+model Quiz {
+  id          String  @id  @default(auto())  @map("_id")  @db.ObjectId
+  type        String
+  question    String
+  answerOne   String
+  answerTwo   String
+  answerThree String
+  answerFour  String
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @default(now())
+}
