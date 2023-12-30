@@ -1,8 +1,8 @@
 interface BodyCustomer{
     
-    name: string
-    password: string
-    email: string
+    nameClient: string
+    passwordClient: string
+    emailClient: string
 }
 
 export { BodyCustomer }
