@@ -1,18 +1,16 @@
-import Fastify from 'fastify';
-import cors from '@fastify/cors';
-import { customers } from './routes/customer';
+import express from 'express';
+import cors from 'cors';
+import routes from './routes/index';
 
-const app = Fastify({ logger: true })
+const app = express();
+const port = process.env.PORT || 3333;
 
-const start = async () => {
+app.use(cors());
 
-    await app.register(cors);
-    await app.register(customers);
-    try{
-        await app.listen({ port: 3333 })
-    } catch(err) {
-        process.exit(1)
-    }
-}
+app.use(express.json());
 
-start();
+app.use(routes);
+
+app.listen(port, () => {
+  console.log(`Server is running at ${port}`);
+});

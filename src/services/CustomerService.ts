@@ -1,5 +1,4 @@
 import prismaClient from "../prisma";
-import { BodyCustomer } from "../interfaces/bodyCustomer";
 import { UserType } from "@prisma/client";
 import bcrypt from "bcrypt";
 
@@ -60,29 +59,23 @@ class CustomerService {
             throw err;
         }
     }
-    async createUser(body: BodyCustomer) {
+    async createUser(nameClient: string, hashedPassword: string, emailClient: string) {
         try {
-            const { nameClient, passwordClient, emailClient} = body;
+                
+            const newUser = await prismaClient.customer.create({
+                data: {
+                    type: "GUEST" as UserType,
+                    name: nameClient,
+                    password: hashedPassword,
+                    email: emailClient,
+                    status: true,
+                },
+            });
 
-            const emailExists = await this.getByEmail(emailClient);
+            const {password, ...user} = newUser;
+    
+            return user;
 
-            if (nameClient && passwordClient && emailClient && emailExists.length === 0) {
-                const hashedPassword = await this.passwordHashCreate(passwordClient);;
-        
-                await prismaClient.customer.create({
-                    data: {
-                        type: "REGULAR" as UserType,
-                        name: nameClient,
-                        password: hashedPassword,
-                        email: emailClient,
-                        status: true,
-                    },
-                });
-        
-                return "User registered successfully";
-            } else {
-                throw new Error("Invalid Input. Provide name, password and email.");
-            }
         } catch(err) {
             console.error(err);
             throw err;
@@ -103,7 +96,7 @@ class CustomerService {
         }
     }
 
-    private async passwordHashCreate(senha: string): Promise<string> {
+    async passwordHashCreate(senha: string): Promise<string> {
         return bcrypt.hash(senha, 10);
     }
 }
