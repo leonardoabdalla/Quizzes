@@ -22,7 +22,7 @@ class LoginService {
           throw new Error("Login or password invalid");
         }
     
-        const token = jwt.sign({ id: user.id }, process.env.JWT_PASS ?? '', {
+        const token = jwt.sign({ id: user.id, type: user.type }, process.env.JWT_PASS ?? '', {
           expiresIn: '3h',
         });
 
