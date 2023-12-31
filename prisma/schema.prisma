@@ -16,27 +16,41 @@ enum UserType {
   GUEST
 }
 
+enum QuestionStatus {
+  APPROVED
+  DISAPPROVED
+  ANALYZING
+  OLD
+}
+
 model Customer {
-  id          String  @id  @default(auto())  @map("_id")  @db.ObjectId
-  type        UserType
-  name        String
-  password    String
-  email       String
-  status      Boolean
-  created_at  DateTime? @default(now())
-  updated_at  DateTime? @default(now())
+  id                   String  @id  @default(auto())  @map("_id")  @db.ObjectId
+  type                 UserType
+  name                 String
+  password             String
+  email                String
+  status               Boolean
+  created_at           DateTime? @default(now())
+  updated_at           DateTime? @default(now())
 
   @@map("customers")
 }
 
 model Quiz {
-  id          String  @id  @default(auto())  @map("_id")  @db.ObjectId
-  type        String
-  question    String
-  answerOne   String
-  answerTwo   String
-  answerThree String
-  answerFour  String
-  created_at  DateTime? @default(now())
-  updated_at  DateTime? @default(now())
+  id                   String  @id  @default(auto())  @map("_id")  @db.ObjectId
+  typeQuiz             String
+  question             String
+  answerOne            String
+  answerTwo            String
+  answerThree          String
+  answerFour           String
+  answerFive           String
+  correctAnswer        String
+  userCreatedQuestion  String
+  userReview           String
+  status               QuestionStatus
+  created_at           DateTime? @default(now())
+  updated_at           DateTime? @default(now())
+
+  @@map("quizzes")
 }

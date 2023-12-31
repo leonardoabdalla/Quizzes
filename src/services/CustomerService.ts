@@ -107,7 +107,6 @@ class CustomerService {
         }
     }
 
-
     async removeUser(id: string) {
         try {
             await prismaClient.customer.delete({

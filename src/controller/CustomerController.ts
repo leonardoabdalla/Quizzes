@@ -56,6 +56,7 @@ class CustomerController {
       }
 
       const newUser = await customerService.createUser(nameClient, hashedPassword, emailClient);
+      
       res.status(201).json(newUser);
     } catch (err) {
       console.error(err);
@@ -79,7 +80,6 @@ class CustomerController {
       const dataUser = jwt.decode(token as string);
       const { id } = dataUser as BodyCustomer;
 
-
       const updateUser = await customerService.updateUser(req.body, id);
       
       res.status(200).json(updateUser);
@@ -88,7 +88,6 @@ class CustomerController {
       res.status(500).send('Erro interno do servidor');
     }
   }
-
 
   async userRemove(req: Request, res: Response) {
     try {

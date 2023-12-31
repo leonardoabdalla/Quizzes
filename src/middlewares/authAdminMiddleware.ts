@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import jwt from "jsonwebtoken";
 import { BodyCustomer } from '../interfaces/bodyCustomer';
 
-export const authTypeMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+export const authAdminMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   
     try {
         const { authorization } = req.headers;
