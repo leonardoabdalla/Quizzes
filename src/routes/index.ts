@@ -1,11 +1,10 @@
 import { Router } from "express";
 import customerRoutes from "./customer";
 import loginRouter from "./login";
-import { authMiddleware } from "../middlewares/authMiddleware";
 
 const routes = Router();
 
 routes.use('/login', loginRouter);
-routes.use('/customers', authMiddleware, customerRoutes);
+routes.use('/customers', customerRoutes);
 // routes.use('/quiz', authMiddleware, quizzesRouter);
 export default routes;

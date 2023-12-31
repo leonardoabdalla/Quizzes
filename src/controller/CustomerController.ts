@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { CustomerService } from '../services/CustomerService';
+import jwt from "jsonwebtoken";
 
 class CustomerController {
   async getAllUsers(req: Request, res: Response) {
@@ -60,6 +61,33 @@ class CustomerController {
       res.status(500).send('Erro interno do servidor');
     }
   }
+
+  async updateUser(req: Request, res: Response) {
+    try {
+      const customerService = new CustomerService();
+
+      const emailExists = await customerService.getByEmail(req.body.emailClient);
+
+      if(emailExists.length > 0) {
+        return res.status(409).json({ error: 'Email already exists' });
+      }
+
+      const { authorization } = req.headers;
+      const token = authorization?.split(' ')[1];
+  
+      const dataUser = jwt.decode(token as string);
+      const { id }: any = dataUser;
+
+
+      const updateUser = await customerService.updateUser(req.body, id);
+      
+      res.status(200).json(updateUser);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Erro interno do servidor');
+    }
+  }
+
 
   async userRemove(req: Request, res: Response) {
     try {

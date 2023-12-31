@@ -1,6 +1,7 @@
 import prismaClient from "../prisma";
 import { UserType } from "@prisma/client";
 import bcrypt from "bcrypt";
+import { BodyCustomer } from "../interfaces/bodyCustomer";
 
 class CustomerService {
     async getAllUsers() {
@@ -8,6 +9,7 @@ class CustomerService {
             const getAllUsers = await prismaClient.customer.findMany({
                 select: {
                     id: true,
+                    type: true,
                     name: true,
                     email: true,
                     status: true
@@ -81,6 +83,30 @@ class CustomerService {
             throw err;
         }
     }
+
+    async updateUser(body: BodyCustomer, id: string) {
+        try {
+            const { nameClient, passwordClient, emailClient} = body;
+            
+            const updateUser = await prismaClient.customer.update({
+                where: {
+                    id: id,
+                },
+                data: {
+                    name: nameClient,
+                    password: passwordClient,
+                    email: emailClient
+                },
+            });
+
+            return updateUser;
+
+        } catch(err) {
+            console.error(err);
+            throw err;
+        }
+    }
+
 
     async removeUser(id: string) {
         try {
