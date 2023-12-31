@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { CustomerService } from '../services/CustomerService';
 import jwt from "jsonwebtoken";
+import { BodyCustomer } from '../interfaces/bodyCustomer';
 
 class CustomerController {
   async getAllUsers(req: Request, res: Response) {
@@ -76,7 +77,7 @@ class CustomerController {
       const token = authorization?.split(' ')[1];
   
       const dataUser = jwt.decode(token as string);
-      const { id }: any = dataUser;
+      const { id } = dataUser as BodyCustomer;
 
 
       const updateUser = await customerService.updateUser(req.body, id);

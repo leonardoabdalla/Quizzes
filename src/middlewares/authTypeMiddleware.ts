@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from "jsonwebtoken";
+import { BodyCustomer } from '../interfaces/bodyCustomer';
 
 export const authTypeMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   
@@ -9,7 +10,7 @@ export const authTypeMiddleware = async (req: Request, res: Response, next: Next
         const token = authorization?.split(' ')[1];
   
         const dataUser = jwt.decode(token as string);
-        const { type }: any = dataUser;
+        const { type } = dataUser as BodyCustomer;
 
         if (type !== "ADMIN") {
           return res.status(401).send('Not authorized');
