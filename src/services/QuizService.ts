@@ -1,6 +1,7 @@
 import prismaClient from "../prisma";
 import { BodyQuiz } from "../interfaces/bodyQuiz";
 import { QuestionStatus } from "@prisma/client";
+import { CustomerService } from "./CustomerService";
 
 class QuizService {               
     
@@ -41,68 +42,43 @@ class QuizService {
         }
     }
 
-    async getAllQuizzes() {
-        const getAll = await prismaClient.quiz.findMany();
-
-        return getAll;
-    }
-
-    async getByIdQuestion(id: string) {
+    async getAllOrFilter(body: BodyQuiz, type: string, idClient: string) {
         try {
-            const getById = await prismaClient.quiz.findUnique({
-                where: {
-                    id,
-                },
-            });
+            const { 
+                typeQuiz, 
+                status, 
+                question, 
+                userCreatedQuestion, 
+                userReview,
+                id
+            } = body;
 
-            return getById;
+            const customerService = new CustomerService();
 
-        } catch(err) {
-            console.error(err);
-            throw err;
-        }
-    }
-    async getByEmail(email: string) {
-        try {
-            const userQuestions = await prismaClient.quiz.findMany({
-                where: {
-                    userCreatedQuestion: email,
-                },
-            });
-    
-            return userQuestions;
-        } catch (err) {
-            console.error(err);
-            throw err;
-        }
-    }
+            const getById = await customerService.getByIdUser(idClient);
 
-    async getByTypeQuiz() {
-        try {
-            const titles: string[] = [];
-            
-            const typeQuestions = await prismaClient.quiz.findMany({
-                select: {
-                    typeQuiz: true,
-                },
-            });
-            
-            titles.push(...typeQuestions.map(question => question.typeQuiz));
-            const uniqueTitles: string[] = [...new Set(titles)];
-    
-            return uniqueTitles;
-        } catch (err) {
-            console.error(err);
-            throw err;
-        }
-    }
+            const typeClientAuth = getById?.subscriptions.some((type) => type === typeQuiz);
 
-    async getAllType(typeQuiz: string, status: QuestionStatus) {
-        try {
+            if(!type && !status && !question && !userCreatedQuestion && !userReview && !id && type !== "ADMIN") {
+                throw new Error("Not authorized");
+            }
+
+            if((status !== "APPROVED" || question || userReview || id) && type !== "ADMIN") {
+                throw new Error("Not authorized");
+            }
+
+            if(typeQuiz !== undefined && !typeClientAuth && type !== "ADMIN") {
+                throw new Error("Not authorized");
+            }
+
             const result = await prismaClient.quiz.findMany({
                 where: {
                     typeQuiz: typeQuiz,
                     status,
+                    question,
+                    userCreatedQuestion,
+                    userReview,
+                    id
                 },
               })
             

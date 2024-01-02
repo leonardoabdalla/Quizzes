@@ -1,3 +1,4 @@
+import { QuestionStatus } from "@prisma/client";
 
 interface BodyQuiz {
     id: string,
@@ -11,7 +12,7 @@ interface BodyQuiz {
     correctAnswer: string,
     userCreatedQuestion: string,
     userReview: string,
-    status: string,
+    status: QuestionStatus,
 }
 
 export { BodyQuiz }

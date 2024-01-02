@@ -32,7 +32,8 @@ class CustomerService {
                     id: true,
                     name: true,
                     email: true,
-                    status: true
+                    status: true,
+                    subscriptions: true
                 }
             });
             return getById;
