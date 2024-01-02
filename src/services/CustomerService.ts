@@ -25,7 +25,7 @@ class CustomerService {
         try {
             const getById = await prismaClient.customer.findUnique({
                 where: {
-                    id: id
+                    id,
                 },
                 select: {
                     type: true,
@@ -61,7 +61,7 @@ class CustomerService {
             throw err;
         }
     }
-    async createUser(nameClient: string, hashedPassword: string, emailClient: string) {
+    async createUser(nameClient: string, hashedPassword: string, emailClient: string, subscriptionsClient: string[]) {
         try {
                 
             const newUser = await prismaClient.customer.create({
@@ -71,6 +71,8 @@ class CustomerService {
                     password: hashedPassword,
                     email: emailClient,
                     status: true,
+                    subscriptions: { set: subscriptionsClient },
+                    payment: true
                 },
             });
 
@@ -90,7 +92,7 @@ class CustomerService {
             
             const updateUser = await prismaClient.customer.update({
                 where: {
-                    id: id,
+                    id,
                 },
                 data: {
                     name: nameClient,
@@ -111,7 +113,7 @@ class CustomerService {
         try {
             await prismaClient.customer.delete({
                 where: {
-                    id: id
+                    id,
                 }
             });
             return "User removed successfully";

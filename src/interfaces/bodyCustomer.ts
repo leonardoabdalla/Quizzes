@@ -4,7 +4,8 @@ interface BodyCustomer {
     nameClient: string,
     passwordClient: string,
     email: string,
-    emailClient: string
+    emailClient: string,
+    subscriptions: string[]
 }
 
 export { BodyCustomer }

@@ -41,9 +41,9 @@ class CustomerController {
 
   async createUser(req: Request, res: Response) {
     try {
-      const { nameClient, passwordClient, emailClient} = req.body;
+      const { nameClient, passwordClient, emailClient, subscriptionsClient} = req.body;
       
-      if (req.body.nameClient === undefined || req.body.passwordClient === undefined || req.body.emailClient === undefined) {
+      if ( !nameClient || !passwordClient || !emailClient || !subscriptionsClient) {
         return res.status(422).json({ error: 'Invalid input: Name, password, and email are required.' });
       }
 
@@ -55,7 +55,7 @@ class CustomerController {
         return res.status(409).json({ error: 'Email already exists' });
       }
 
-      const newUser = await customerService.createUser(nameClient, hashedPassword, emailClient);
+      const newUser = await customerService.createUser(nameClient, hashedPassword, emailClient, subscriptionsClient);
       
       res.status(201).json(newUser);
     } catch (err) {

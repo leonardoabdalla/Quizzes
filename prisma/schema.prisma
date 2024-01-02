@@ -30,6 +30,8 @@ model Customer {
   password             String
   email                String
   status               Boolean
+  subscriptions        String[]
+  payment              Boolean
   created_at           DateTime? @default(now())
   updated_at           DateTime? @default(now())
 
