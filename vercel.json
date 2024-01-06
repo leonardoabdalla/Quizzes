@@ -6,7 +6,7 @@
         "config": {
           "env": {
             "DATABASE_URL": "mongodb+srv://leonardobabdalla:dragao147@quizzes.lrgx9zt.mongodb.net/quizzes?retryWrites=true&w=majority",
-            "JWT_PASS": "HQJ2QiZcT7C?Y&=]F}0X&j5hTL2-78Ojj;pBD=Yp/u3U?8|4U_"
+            "JWT_PASS": "HQJ2QiZcT7C?Y&=]F}0X&j5hTL2-78Ojj;pBD=Yp/usU?8|4U_"
           }
         }
       },
@@ -27,5 +27,10 @@
         "src": "(.*)",
         "dest": "src/server.ts"
       }
-    ]
-}
+    ],
+    "version": 2,
+    "ignore": ["**/node_modules/**/*", "**/.vercel"],
+    "env": {
+      "JWT_PASS": "HQJ2QiZcT7C?Y&=]F}0X&j5hTL2-78Ojj;pBD=Yp/usU?8|4U_"
+    }
+  }
