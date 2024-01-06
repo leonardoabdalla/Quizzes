@@ -1,36 +1,9 @@
 {
-    "builds": [
-      {
-        "src": "src/server.ts",
-        "use": "@vercel/node",
-        "config": {
-          "env": {
-            "DATABASE_URL": "mongodb+srv://leonardobabdalla:dragao147@quizzes.lrgx9zt.mongodb.net/quizzes?retryWrites=true&w=majority",
-            "JWT_PASS": "HQJ2QiZcT7C?Y&=]F}0X&j5hTL2-78Ojj;pBD=Yp/usU?8|4U_"
-          }
-        }
-      },
-      {
-        "src": "src/prisma/**/*.ts",
-        "use": "@prisma/cli",
-        "config": {
-          "prisma": "src/prisma/index.ts",
-          "env": {
-            "DATABASE_URL": "mongodb+srv://leonardobabdalla:dragao147@quizzes.lrgx9zt.mongodb.net/quizzes?retryWrites=true&w=majority",
-            "JWT_PASS": "HQJ2QiZcT7C?Y&=]F}0X&j5hTL2-78Ojj;pBD=Yp/usU?8|4U_"
-          }
-        }
-      }
-    ],
+    "version": 2,
     "routes": [
       {
-        "src": "(.*)",
-        "dest": "src/server.ts"
+        "src": "/(.*)",
+        "dest": "/server.js"
       }
-    ],
-    "version": 2,
-    "ignore": ["**/node_modules/**/*", "**/.vercel"],
-    "env": {
-      "JWT_PASS": "HQJ2QiZcT7C?Y&=]F}0X&j5hTL2-78Ojj;pBD=Yp/usU?8|4U_"
-    }
-  }
+    ]
+}
