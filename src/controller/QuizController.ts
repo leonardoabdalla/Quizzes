@@ -6,8 +6,7 @@ import { BodyCustomer } from '../interfaces/bodyCustomer';
 class QuizController {   
 
   async createQuestion(req: Request, res: Response) {
-    try {
-      const { authorization } = req.headers;
+    const { authorization } = req.headers;
 
       const token = authorization?.split(" ")[1];
       const dataUser = jwt.decode(token as string);
@@ -18,43 +17,29 @@ class QuizController {
       const createQuiz = await quizService.createQuiz(req.body, email);
 
       res.status(201).json(createQuiz);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Erro interno do servidor');
-    }
   }
 
   async getAllOrFilter(req: Request, res: Response) {
-    try {
-      const { authorization } = req.headers;
+    const { authorization } = req.headers;
 
-      const token = authorization?.split(" ")[1];
-      const dataUser = jwt.decode(token as string);
-      const { type, id: idClient } = dataUser as BodyCustomer;
-      const questionsService = new QuizService();
-      const getAllOrFilter = await questionsService.getAllOrFilter(req.body, type, idClient);
-      res.status(200).json(getAllOrFilter);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Erro interno do servidor');
-    }
+    const token = authorization?.split(" ")[1];
+    const dataUser = jwt.decode(token as string);
+    const { type, id: idClient } = dataUser as BodyCustomer;
+    const questionsService = new QuizService();
+    const getAllOrFilter = await questionsService.getAllOrFilter(req.body, type, idClient);
+    res.status(200).json(getAllOrFilter);
   }
 
   async updateStatusQuestions(req: Request, res: Response) {
-    try {
-      const { authorization } = req.headers;
+    const { authorization } = req.headers;
 
-      const token = authorization?.split(" ")[1];
-      const dataUser = jwt.decode(token as string);
-      const { email } = dataUser as BodyCustomer;
-      const { id, statusQuestion } = req.body;
-      const questionService = new QuizService();
-      const updatedStatusQuiz = await questionService.updatedStatusQuiz(id, statusQuestion, email);
-      res.status(200).json(updatedStatusQuiz);
-    } catch(err) {
-      console.error(err);
-      res.status(500).send('Erro interno do servidor');
-    }
+    const token = authorization?.split(" ")[1];
+    const dataUser = jwt.decode(token as string);
+    const { email } = dataUser as BodyCustomer;
+    const { id, statusQuestion } = req.body;
+    const questionService = new QuizService();
+    const updatedStatusQuiz = await questionService.updatedStatusQuiz(id, statusQuestion, email);
+    res.status(200).json(updatedStatusQuiz);
   }
 }
 

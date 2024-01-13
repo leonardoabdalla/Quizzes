@@ -54,6 +54,10 @@ model Quiz {
   userCreatedQuestion  String
   userReview           String
   status               QuestionStatus
+  comment              String?
+  newSugestion         String?
+  statusSugestion      Boolean?
+  userReviewSugestion  String?
   created_at           DateTime?     @default(now())
   updated_at           DateTime?     @default(now())
 

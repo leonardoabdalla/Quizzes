@@ -16,77 +16,65 @@ class QuizService {
             answerFive, 
             correctAnswer, 
         } = body;
-        
-        try {
-            const newUser = await prismaClient.quiz.create({
-                data: {
-                    typeQuiz,
-                    question,
-                    answerOne,
-                    answerTwo,
-                    answerThree,
-                    answerFour,
-                    answerFive,
-                    correctAnswer,
-                    userCreatedQuestion: email,
-                    userReview: "WAITING",
-                    status: "ANALYZING" as QuestionStatus,
-                },
-            });
+        const newUser = await prismaClient.quiz.create({
+            data: {
+                typeQuiz,
+                question,
+                answerOne,
+                answerTwo,
+                answerThree,
+                answerFour,
+                answerFive,
+                correctAnswer,
+                userCreatedQuestion: email,
+                userReview: "WAITING",
+                status: "ANALYZING" as QuestionStatus,
+            },
+        });
 
-            return newUser
-
-        } catch(err) {
-            console.error(err);
-            throw err;
-        }
+        return newUser
     }
 
     async getAllOrFilter(body: BodyQuiz, type: string, idClient: string) {
-        try {
-            const { 
-                typeQuiz, 
-                status, 
-                question, 
-                userCreatedQuestion, 
+        const { 
+            typeQuiz, 
+            status, 
+            question, 
+            userCreatedQuestion, 
+            userReview,
+            id
+        } = body;
+
+        const customerService = new CustomerService();
+
+        const getById = await customerService.getByIdUser(idClient);
+
+        const typeClientAuth = getById?.subscriptions.some((type) => type === typeQuiz);
+
+        if(!type && !status && !question && !userCreatedQuestion && !userReview && !id && type !== "ADMIN") {
+            throw new Error("Not authorized");
+        }
+
+        if((status !== "APPROVED" || question || userReview || id) && type !== "ADMIN") {
+            throw new Error("Not authorized");
+        }
+
+        if(typeQuiz !== undefined && !typeClientAuth && type !== "ADMIN") {
+            throw new Error("Not authorized");
+        }
+
+        const result = await prismaClient.quiz.findMany({
+            where: {
+                typeQuiz: typeQuiz,
+                status,
+                question,
+                userCreatedQuestion,
                 userReview,
                 id
-            } = body;
-
-            const customerService = new CustomerService();
-
-            const getById = await customerService.getByIdUser(idClient);
-
-            const typeClientAuth = getById?.subscriptions.some((type) => type === typeQuiz);
-
-            if(!type && !status && !question && !userCreatedQuestion && !userReview && !id && type !== "ADMIN") {
-                throw new Error("Not authorized");
-            }
-
-            if((status !== "APPROVED" || question || userReview || id) && type !== "ADMIN") {
-                throw new Error("Not authorized");
-            }
-
-            if(typeQuiz !== undefined && !typeClientAuth && type !== "ADMIN") {
-                throw new Error("Not authorized");
-            }
-
-            const result = await prismaClient.quiz.findMany({
-                where: {
-                    typeQuiz: typeQuiz,
-                    status,
-                    question,
-                    userCreatedQuestion,
-                    userReview,
-                    id
-                },
-              })
-            
-              return result;
-        } catch(err) {
-            console.error(err);
-            throw err;
-        }
+            },
+        })
+        
+        return result;
     }
 
     async updatedStatusQuiz(id: string, statusQuestion: QuestionStatus, email: string) {
