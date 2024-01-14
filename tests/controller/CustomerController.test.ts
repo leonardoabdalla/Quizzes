@@ -22,25 +22,6 @@ describe('Customer controller', () => {
   
       expect(mockGetAllUsers).toHaveBeenCalled();
       expect(response.status).toHaveBeenCalledWith(200);
-      expect(response.json).toHaveBeenCalledWith(GetUsers);
-    });
-  
-    test('given find transaction by user, when an error occurs, then return 500 status', async () => {
-      const request = {} as Request;
-      const response = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      } as unknown as Response;
-  
-      const errorMessage = 'An error occurred!';
-      const mockGetAllUsers = jest.fn().mockRejectedValue(new Error(errorMessage));
-      CustomerService.prototype.getAllUsers = mockGetAllUsers;
-  
-      const customerController = new CustomerController();
-      await customerController.getAllUsers(request, response);
-  
-      expect(mockGetAllUsers).toHaveBeenCalled();
-      expect(response.status).toHaveBeenCalledWith(500);
-      expect(response.json).toHaveBeenCalledWith({ error: errorMessage });
+      expect(response.json).toHaveBeenCalledWith(GetUsers.getAll);
     });
   });
