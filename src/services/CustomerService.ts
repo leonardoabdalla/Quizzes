@@ -2,6 +2,7 @@ import prismaClient from "../prisma";
 import { UserType } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { BodyCustomer } from "../interfaces/bodyCustomer";
+import { ApiError } from "../helpers/api-errors";
 
 class CustomerService {
     async getAllUsers() {
@@ -16,21 +17,31 @@ class CustomerService {
         });
         return getAllUsers;
     }
+
     async getByIdUser(id: string) {
-        const getById = await prismaClient.customer.findUnique({
-            where: {
-                id,
-            },
-            select: {
-                type: true,
-                id: true,
-                name: true,
-                email: true,
-                status: true,
-                subscriptions: true
+        try {
+            const getById = await prismaClient.customer.findUnique({
+                where: {
+                    id,
+                },
+                select: {
+                    type: true,
+                    id: true,
+                    name: true,
+                    email: true,
+                    status: true,
+                    subscriptions: true
+                }
+            });
+            return getById;
+        } catch (err: any) {
+            if (err.code === "P2023") {
+                throw new ApiError("Usuário não encontrado", 404)
+            } else {
+                console.error("Erro ao buscar usuário:", err.message);
+                throw err;
             }
-        });
-        return getById;
+        }
     }
     async getByEmail(emailClient: string) {
         const user = await prismaClient.customer.findMany({

@@ -21,7 +21,7 @@ customerRouter.get('/users', async (req, res) => {
   return new CustomerController().getAllUsers(req, res);
 });
 
-customerRouter.get('/:id', async (req, res) => {
+customerRouter.get('/:id', async (req, res, next) => {
   return new CustomerController().getByIdUser(req, res);
 });
 

@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { CustomerService } from '../services/CustomerService';
 import jwt from "jsonwebtoken";
 import { BodyCustomer } from '../interfaces/bodyCustomer';

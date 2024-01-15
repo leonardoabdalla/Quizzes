@@ -7,8 +7,10 @@
     "node": "18"
   },
   "scripts": {
-    "dev": "tsx src/server.ts",
-    "test": "jest"
+    "test": "jest",
+    "build": "sucrase ./src -d ./dist --transforms imports",
+    "dev": "nodemon src/server.ts",
+    "start": "nodemon dist/server.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +19,7 @@
     "@babel/core": "^7.23.7",
     "@babel/preset-env": "^7.23.8",
     "@babel/preset-typescript": "^7.23.3",
+    "@sucrase/jest-plugin": "^3.0.0",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
@@ -25,7 +28,10 @@
     "@types/node": "^20.10.5",
     "babel-jest": "^29.7.0",
     "jest": "^29.7.0",
+    "nodemon": "^3.0.2",
     "prisma": "^5.7.1",
+    "sucrase": "^3.35.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
   "dependencies": {

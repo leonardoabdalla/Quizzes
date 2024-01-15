@@ -1,9 +1,6 @@
 import { GetAllUsers } from "../../src/interfaces/getAllUsers"
 
 export class GetUsers {
-    static getAll(_getAll: any) {
-        throw new Error("Method not implemented.")
-    }
     getAll: GetAllUsers[] = [
         {
             "id": "659351f98dc1e5a574618368",
@@ -38,4 +35,6 @@ export class GetUsers {
             "TESTE2"
         ]
     }
+  static getAll: any
+  static getByUser: any
 }
